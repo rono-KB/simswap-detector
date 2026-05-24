@@ -7,7 +7,12 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin: ['https://simswap-detector.netlify.app', 'http://localhost:3000'],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Routes
