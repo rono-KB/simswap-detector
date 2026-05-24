@@ -29,8 +29,9 @@ exports.logEvent = async (req, res) => {
     if (flagged) {
       const alertMessage = `ALERT: Suspicious activity detected. Phone: ${user.phone}. Event: ${eventType}. Risk Score: ${riskScore}/100. Reasons: ${reasons.join(', ')}. Time: ${new Date().toLocaleString('en-KE')}. If this was not you, contact your operator immediately.`;
 
-      await sendEmail(user.email, 'SIM Swap Alert Detected', alertMessage);
-      await sendSMS(user.phone, `SIM SWAP ALERT: Suspicious activity. Risk Score: ${riskScore}/100. Reasons: ${reasons.join(', ')}. Contact Safaricom if not you.`);
+      // Send in background - don't await
+      sendEmail(user.email, 'SIM Swap Alert Detected', alertMessage);
+      sendSMS(user.phone, `SIM SWAP ALERT: Suspicious activity. Risk Score: ${riskScore}/100. Reasons: ${reasons.join(', ')}. Contact Safaricom if not you.`);
 
       const alert = new Alert({
         userId: user._id,
